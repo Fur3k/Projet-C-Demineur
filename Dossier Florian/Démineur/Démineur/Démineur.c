@@ -36,7 +36,7 @@ int ask_number(const char* message, Grid* grid) {
 int place_bomb(Grid* grid, int row, int col) {
     srand(time(NULL));
 
-    int limit_bomb = grid->size/2;
+    int limit_bomb = (grid->size* grid->size)/5;
     int i = 0;
     char** list_pos = (char**)malloc(grid->size * sizeof(char*));
     for (int x = 0; x < grid->size; x++) {
@@ -244,6 +244,14 @@ void show_grid(Grid* grid) {
         if (i == -1) {
             printf("   |");
         }
+        else if (99 < i)
+        {
+            printf("%d|", i);
+        }
+        else if (9 < i)
+        {
+            printf(" %d|", i);
+        }
         else
         {
             printf(" 0%d|", i);
@@ -252,23 +260,83 @@ void show_grid(Grid* grid) {
 
     printf("\n");
     for (int i = 0; i < grid->size; i++) {
-        printf(" 0%d|", i);
+        if (99 < i)
+        {
+            printf("%d|", i);
+        }
+        else if (9 < i)
+        {
+            printf(" %d|", i);
+        }
+        else
+        {
+            printf(" 0%d|", i);
+        }
         for (int j = 0; j < grid->size; j++) {
-            printf(" %c |", grid->tiles[i][j].value);
+            if (grid->tiles[i][j].value == '0'){
+                printf("\033[30m");
+            }
+            else if (grid->tiles[i][j].value == '1') {
+                printf("\033[34m");
+            }
+            else if (grid->tiles[i][j].value == '2') {
+                printf("\033[32m");
+            }
+            else if (grid->tiles[i][j].value == '3') {
+                printf("\033[33m");
+            }
+            else if (grid->tiles[i][j].value == '4') {
+                printf("\033[35m");
+            }
+            else if (grid->tiles[i][j].value == '5') {
+                printf("\033[31m");
+            }
+            else if (grid->tiles[i][j].value == '6') {
+                printf("\033[36m");
+            }
+            else if (grid->tiles[i][j].value == '7') {
+                printf("\033[37m");
+            }
+            else if (grid->tiles[i][j].value == '8') {
+                printf("\033[38m");
+            }
+            else if (grid->tiles[i][j].value == 'F') {
+                printf("\033[31m");
+            }
+            printf(" %c ", grid->tiles[i][j].value);
+            printf("\033[00m");
+            printf("|");
         }
         printf("\n");
     }
 }
 
+int test_win(Grid* grid) {
+    for (int i = 0; i < grid->size; i++) {
+        for (int j = 0; j < grid->size; j++)
+        {
+            if (grid->tiles[i][j].value == '?' && !grid->tiles[i][j].isBomb) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
 //Permet de lancer le jeu
 int game() {
     Grid g;
-    g.size = 10;
+    printf("Choississez la taille de la grille : ");
+    scanf_s("%d", &g.size);
+    while (getchar() != '\n');
     create_grid(&g);
     show_grid(&g);
     ask_tile(&g, 1);
     while (1) {
         show_grid(&g);
+        if (test_win(&g)) {
+            printf("Vous avez gagne !");
+            return 0;
+        }
         if (ask_action("Appuyez sur 1 pour decouvrir une case et sur 0 pour mettre un drapeau :", &g)) {
             show_grid(&g);
             printf("Vous avez perdu !");
