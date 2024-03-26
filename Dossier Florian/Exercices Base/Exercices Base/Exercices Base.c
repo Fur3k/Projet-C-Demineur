@@ -122,6 +122,69 @@ void tri_dizaine() {
 	printf("La somme de toute les dizaines est de %d, et le plus grand nombre est %d !\n", somme_diz, max_diz);
 }
 
+/*-----Tableaux-----*/
+
+void occur_int() 
+{
+	int tab[6] = { 1,3,5,3,1,3 };
+	int nb_occur[6] = { 0 };
+	for (int i = 0; i < 6; i++)
+	{
+		if (nb_occur[tab[i]] == 0){
+			for (int j = 0; j < 6; j++) {
+				if (tab[i] == tab[j]){
+					nb_occur[tab[i]]++;
+				}
+			}
+			printf("il y a %d fois %d dans le tableau !\n", nb_occur[tab[i]], tab[i]);
+		}
+	}
+}
+
+void tri_a_bulle() {
+	int size = 10;
+	int max = 0;
+	int tab[10] = { 21,15,321,56,12,54,2,1,4,50 };
+	while (size != 1) {
+		for (int i = 0; i < size - 1; i++) 
+		{
+			if (tab[i] > tab[i+1]) {
+				max = tab[i];
+				tab[i] = tab[i+1];
+				tab[i + 1] = max;
+			}
+		}
+		size--;
+	}
+	for (int j = 0; j < 10; j++) {
+		printf(" %d |", tab[j]);
+	}
+	printf("\n");
+}
+
+void tri_insertion() {
+	int size = 10;
+	int min;
+	int tab[] = { 21,15,321,56,12,54,2,1,4,50 };
+	for (int i = 1; i < size; i++)
+	{
+		if (tab[i] < tab[i - 1]) {
+			min = tab[i];
+			int j = i;
+			while (min < tab[j - 1] && j > 0)
+			{
+				tab[j] = tab[j - 1];
+				j--;
+			}
+			tab[j] = min;
+		}
+	}
+	for (int k = 0; k < 10; k++) {
+		printf(" %d |", tab[k]);
+	}
+	printf("\n");
+}
+
 int main() {
 	/*-----Conditions-----*/
 	pair_impair(4);
@@ -133,4 +196,8 @@ int main() {
 	/*-----Boucles-----*/
 	int_premier(101);
 	tri_dizaine();
+	/*-----Tableaux-----*/
+	occur_int();
+	tri_a_bulle();
+	tri_insertion();
 }
