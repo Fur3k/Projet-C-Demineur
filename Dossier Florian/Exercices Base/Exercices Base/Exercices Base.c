@@ -145,7 +145,7 @@ void tri_a_bulle() {
 	int size = 10;
 	int max = 0;
 	int tab[10] = { 21,15,321,56,12,54,2,1,4,50 };
-	while (size != 1) {
+	while (size > 1) {
 		for (int i = 0; i < size - 1; i++) 
 		{
 			if (tab[i] > tab[i+1]) {
