@@ -46,14 +46,30 @@ int place_bomb(Grid* grid, int row, int col) {
         }
     }
     //tuiles adjacentes à la tuile découverte
-    list_pos[row-1][col-1] = '0';
-    list_pos[row-1][col] = '0';
-    list_pos[row-1][col+1] = '0';
-    list_pos[row][col-1] = '0';
-    list_pos[row][col+1] = '0';
-    list_pos[row+1][col-1] = '0';
-    list_pos[row+1][col] = '0';
-    list_pos[row+1][col+1] = '0';
+    if (row > 0 && col > 0) {
+        list_pos[row-1][col-1] = '0';
+    }
+    if (row > 0) {
+        list_pos[row-1][col] = '0';
+    }
+    if (col < grid->size-1 && row > 0) {
+        list_pos[row-1][col+1] = '0';
+    }
+    if (col > 0) {
+        list_pos[row][col-1] = '0';
+    }
+    if (col < grid->size-1) {
+        list_pos[row][col+1] = '0';
+    }
+    if (row < grid->size-1 && col > 0) {
+        list_pos[row + 1][col - 1] = '0';
+    }
+    if (row < grid->size-1) {
+        list_pos[row + 1][col] = '0';
+    }
+    if (col < grid->size-1 && row < grid->size-1) {
+        list_pos[row + 1][col + 1] = '0';
+    }
     while(i < limit_bomb) {
         int random_x = rand() % (grid->size);
         int random_y = rand() % (grid->size);
@@ -240,6 +256,7 @@ int ask_action(const char* message, Grid* grid) {
 
 //Permet l'affichage du démineur
 void show_grid(Grid* grid) {
+    system("cls");
     for (int i = -1; i < grid->size; i++) {
         if (i == -1) {
             printf("   |");
@@ -273,6 +290,7 @@ void show_grid(Grid* grid) {
             printf(" 0%d|", i);
         }
         for (int j = 0; j < grid->size; j++) {
+            //Affichage des différentes couleurs
             if (grid->tiles[i][j].value == '0'){
                 printf("\033[30m");
             }
@@ -335,11 +353,13 @@ int game() {
         show_grid(&g);
         if (test_win(&g)) {
             printf("Vous avez gagne !");
+            free(g.tiles);
             return 0;
         }
         if (ask_action("Appuyez sur 1 pour decouvrir une case et sur 0 pour mettre un drapeau :", &g)) {
             show_grid(&g);
             printf("Vous avez perdu !");
+            free(g.tiles);
             return 0;
         }
     }
