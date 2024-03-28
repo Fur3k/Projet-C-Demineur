@@ -25,11 +25,25 @@ void Init(List* pList)
 
 void AddFirst(List* pList, int iValue)
 {
+    Node* first = (Node*)malloc(sizeof(Node));
+    first->iValue = iValue;
+
+    Node* pOldFirstPrevious = pList->pFirst->pPrevious;
     //
+    if (pList->pFirst != NULL) {
+        
+        first->pPrevious = pOldFirstPrevious;
+        pOldFirstPrevious->pNext = pList->pFirst;
+
+
+        Node* Oldfirst = pList->pFirst;
+        pList->iCount += 1;
+        pList->pFirst->iValue = iValue;
+        pList->pFirst->pNext = Oldfirst;
+        pList->pFirst->pPrevious = NULL;
+    }
+    pList->pFirst = first; 
     pList->iCount += 1;
-    pList->pFirst->iValue = iValue;
-    pList->pFirst->pNext = &pList[pList->iCount + 1];
-    pList->pFirst->pPrevious = &pList[pList->iCount - 1];
 }
 
 void AddLast(List* pList, int iValue)
@@ -37,7 +51,7 @@ void AddLast(List* pList, int iValue)
     //
     pList->iCount += 1;
     pList->pFirst->iValue = iValue;
-    pList->pFirst->pNext = &pList[pList->iCount + 1];
+    pList->pFirst->pNext = NULL;
     pList->pFirst->pPrevious = &pList[pList->iCount - 1];
 }
 

@@ -32,6 +32,24 @@ int ask_number(const char* message, Grid* grid) {
     }
 }
 
+
+//Création du démineur de taille "size"
+void create_grid(Grid* grid) {
+    //Création d'un tableau de dimension 2 contenant des Tile
+    grid->tiles = (Tile**)malloc(grid->size * sizeof(Tile*));
+    for (int i = 0; i < grid->size; i++) {
+        grid->tiles[i] = (Tile*)malloc(grid->size * sizeof(Tile));
+        for (int j = 0; j < grid->size; j++) {
+            grid->tiles[i][j].isDiscover = 0;
+            grid->tiles[i][j].isFlag = 0;
+            grid->tiles[i][j].isBomb = 0;
+            grid->tiles[i][j].near_bomb = 0;
+            grid->tiles[i][j].value = '?';
+        }
+    }
+}
+
+
 //Place les bombes dans le Démineur à une position différente après que la première tuile soit découverte et ses tuiles adjacentes
 int place_bomb(Grid* grid, int row, int col) {
     srand(time(NULL));
@@ -126,21 +144,6 @@ void setvalue(Grid* grid) {
     }
 }
 
-//Création du démineur de taille "size"
-void create_grid(Grid* grid) {
-    //Création d'un tableau de dimension 2 contenant des Tile
-    grid->tiles = (Tile**) malloc(grid->size * sizeof(Tile*));
-    for (int i = 0; i < grid->size; i++) {
-        grid->tiles[i] = (Tile*)malloc(grid->size * sizeof(Tile));
-        for (int j = 0; j < grid->size; j++) {
-            grid->tiles[i][j].isDiscover = 0;
-            grid->tiles[i][j].isFlag = 0;
-            grid->tiles[i][j].isBomb = 0;
-            grid->tiles[i][j].near_bomb = 0;
-            grid->tiles[i][j].value = '?';
-        }
-    }
-}
 
 //Permet de découvrir les alentours de la tuile séléctionné tant que la valeur de nearbomb = 0
 void propag(int row, int col, Grid* grid) {
@@ -365,6 +368,7 @@ int game() {
     }
     return 0; 
 }
+
 int main()
 {
     game();
