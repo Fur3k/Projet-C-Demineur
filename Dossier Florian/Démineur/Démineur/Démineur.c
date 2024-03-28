@@ -32,7 +32,7 @@ int ask_number(const char* message, Grid* grid) {
     }
 }
 
-//Place les bombes dans le Démineur à une position différente de la première tuile découverte et ses tuiles adjacentes
+//Place les bombes dans le Démineur à une position différente après que la première tuile soit découverte et ses tuiles adjacentes
 int place_bomb(Grid* grid, int row, int col) {
     srand(time(NULL));
 
