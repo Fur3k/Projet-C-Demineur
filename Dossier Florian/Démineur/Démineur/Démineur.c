@@ -51,14 +51,14 @@ void create_grid(Grid* grid) {
 
 
 //Place les bombes dans le Démineur à une position différente après que la première tuile soit découverte et ses tuiles adjacentes
-int place_bomb(Grid* grid, int row, int col) {
+Grid place_bomb(Grid* grid, int row, int col) {
     srand(time(NULL));
 
     int limit_bomb = (grid->size* grid->size)/5;
     int i = 0;
     char** list_pos = (char**)malloc(grid->size * sizeof(char*));
     for (int x = 0; x < grid->size; x++) {
-        list_pos[x] = (int*)malloc(grid->size * sizeof(char));
+        list_pos[x] = (char*)malloc(grid->size * sizeof(char));
         for (int y = 0; y < grid->size; y++) {
             list_pos[x][y] = grid->tiles[x][y].value ;
         }
@@ -96,7 +96,7 @@ int place_bomb(Grid* grid, int row, int col) {
             i++;
         }
     }
-    return grid;
+    return *grid;
 }
 
 //Vérifie si la case est une bombe ou non
